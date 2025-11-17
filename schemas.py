@@ -12,7 +12,7 @@ Model name is converted to lowercase for the collection name:
 """
 
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List, Dict, Any
 
 # Example schemas (replace with your own):
 
@@ -37,6 +37,22 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# LexCraft AI schemas
+
+class Contract(BaseModel):
+    """
+    Contract documents created by users
+    Collection name: "contract"
+    """
+    country: str = Field(..., description="Country: Canada or U.S.")
+    region: str = Field(..., description="Province/State")
+    contract_type: str = Field(..., description="Contract type, e.g., Residential Lease, NDA")
+    parties: List[Dict[str, Any]] = Field(..., description="List of parties with names and addresses")
+    key_terms: Dict[str, Any] = Field(default_factory=dict, description="Key numeric or textual terms (price, dates, term)")
+    clauses: List[str] = Field(default_factory=list, description="Custom clauses or special conditions")
+    html: str = Field(..., description="Generated HTML content of the contract")
+    notes: Optional[str] = Field(None, description="Legal notes or citations block")
 
 # Add your own schemas here:
 # --------------------------------------------------
